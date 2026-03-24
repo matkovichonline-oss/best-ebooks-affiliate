@@ -40,26 +40,34 @@ export const PublicBlog = () => {
 
   return (
     <>
-      {/* Fixed Cross-Fading Background */}
-      <div style={{
-        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: -1,
-        backgroundColor: '#04080A', /* dark fallback so contain edges are covered */
-      }}>
+      {/* Fixed Cross-Fading Backgrounds — each layer fades independently for smooth dissolve */}
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: -1, backgroundColor: '#06090c' }}>
+        {[
+          { name: 'Mystery & Thriller' as BookCategory, img: bgMystery },
+          { name: 'Personal Development' as BookCategory, img: bgPersonal },
+          { name: 'Science Fiction & Fantasy' as BookCategory, img: bgScifi },
+        ].map(({ name, img }) => (
+          <div
+            key={name}
+            style={{
+              position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+              backgroundImage: `url("${img}")`,
+              backgroundSize: 'contain',
+              backgroundPosition: 'center center',
+              backgroundRepeat: 'no-repeat',
+              opacity: activeCategory === name ? 0.65 : 0,
+              transition: 'opacity 1.8s ease-in-out',
+            }}
+          />
+        ))}
+        {/* Soft gradient overlay for text readability */}
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-          transition: 'opacity 1.2s ease-in-out',
-          backgroundImage: `${categories.find(c => c.name === activeCategory)?.bg || 'none'}`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center top',
-          backgroundRepeat: 'no-repeat',
-          opacity: 0.55,
-        }} />
-        {/* Subtle gradient overlay to keep text readable without masking the image */}
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-          background: 'linear-gradient(to bottom, rgba(4,8,10,0.25) 0%, rgba(4,8,10,0.55) 100%)'
+          background: 'linear-gradient(to bottom, rgba(6,9,12,0.3) 0%, rgba(6,9,12,0.6) 100%)',
+          pointerEvents: 'none',
         }} />
       </div>
+
 
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         <header className="site-header glass-card" style={{ position: 'sticky', top: '20px', zIndex: 10, padding: '20px 40px', margin: '20px auto 40px' }}>
