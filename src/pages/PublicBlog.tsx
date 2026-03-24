@@ -71,7 +71,7 @@ export const PublicBlog = () => {
 
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         <header className="site-header glass-card" style={{ position: 'sticky', top: '20px', zIndex: 10, padding: '20px 40px', margin: '20px auto 40px' }}>
-          <h1 className="site-title" style={{ fontSize: '1.8rem', letterSpacing: '2px' }}>The Literary Leaf</h1>
+          <h1 className="site-title" style={{ fontSize: '1.8rem', letterSpacing: '2px' }}>The Best Books</h1>
           
           <nav className="nav-links" style={{ paddingTop: '15px' }}>
             {categories.map(cat => (
