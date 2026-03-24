@@ -10,6 +10,8 @@ import bgScifi from '../assets/bg-scifi.png';
 export const PublicBlog = () => {
   const { products } = useAffiliateProducts();
   const [activeCategory, setActiveCategory] = useState<BookCategory>('Mystery & Thriller');
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
 
   const categories = [
     { name: 'Mystery & Thriller' as BookCategory, id: 'mystery', bg: `url("${bgMystery}")` },
@@ -150,6 +152,66 @@ export const PublicBlog = () => {
             );
           })}
         </main>
+
+        {/* NEWSLETTER SECTION */}
+        <section className="newsletter-section glass-card" style={{ margin: '80px auto', maxWidth: '800px', padding: '40px', textAlign: 'center' }}>
+          <h2 style={{ color: '#fff', fontSize: '2rem', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '2px' }}>Join The Reader's Club</h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '30px', fontSize: '1.1rem', fontFamily: 'var(--font-serif)', fontStyle: 'italic' }}>
+            Receive our weekly curated top picks and exclusive literary deals straight to your inbox.
+          </p>
+          
+          {!subscribed ? (
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (email) {
+                  const existing = JSON.parse(localStorage.getItem('newsletter_subscribers') || '[]');
+                  localStorage.setItem('newsletter_subscribers', JSON.stringify([...existing, { email, date: new Date().toISOString() }]));
+                  setSubscribed(true);
+                  setEmail('');
+                }
+              }}
+              style={{ display: 'flex', gap: '10px', maxWidth: '500px', margin: '0 auto' }}
+            >
+              <input 
+                type="email" 
+                placeholder="YOUR EMAIL ADDRESS"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                style={{
+                  flex: 1,
+                  padding: '12px 20px',
+                  borderRadius: '8px',
+                  border: '1px solid var(--border)',
+                  background: 'rgba(255,255,255,0.05)',
+                  color: '#fff',
+                  outline: 'none',
+                  fontSize: '0.9rem',
+                  letterSpacing: '1px'
+                }}
+              />
+              <button 
+                type="submit"
+                className="btn btn-outline"
+                style={{
+                  padding: '12px 30px',
+                  borderRadius: '8px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer'
+                }}
+              >
+                Subscribe
+              </button>
+            </form>
+          ) : (
+            <div className="success-message" style={{ color: 'var(--accent)', fontSize: '1.2rem', fontWeight: 'bold', letterSpacing: '1px' }}>
+              ✨ WELCOME TO THE CLUB! CHECK YOUR INBOX SOON.
+            </div>
+          )}
+        </section>
 
         <footer className="glass-card text-center" style={{ padding: '30px', marginTop: '40px', marginBottom: '20px' }}>
           <p className="text-muted" style={{ fontSize: '0.9rem' }}>
