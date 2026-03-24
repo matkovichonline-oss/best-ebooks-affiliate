@@ -28,15 +28,21 @@ const LoginAndAdminRoute = () => {
       <div className="editorial-card" style={{ maxWidth: '400px', width: '100%', textAlign: 'center' }}>
         <h2 style={{ marginBottom: '10px' }}>Admin Access</h2>
         <p className="text-muted mb-4">Enter the portal password to manage affiliate content.</p>
-        <form onSubmit={handleLogin}>
-          <input 
-            type="password" 
-            className="admin-input" 
-            placeholder="Password..."
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-          {error && <p style={{ color: 'red', fontSize: '0.9rem', marginBottom: '15px' }}>{error}</p>}
+        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          <div>
+            <label htmlFor="admin-password" style={{ display: 'none' }}>Admin Password</label>
+            <input 
+              id="admin-password"
+              type="password" 
+              className="admin-input" 
+              placeholder="Password..."
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              autoComplete="current-password"
+              style={{ marginBottom: '0' }}
+            />
+          </div>
+          {error && <p style={{ color: 'red', fontSize: '0.9rem', margin: 0 }}>{error}</p>}
           <button type="submit" className="btn btn-amazon" style={{ width: '100%' }}>Login</button>
         </form>
       </div>

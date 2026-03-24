@@ -46,17 +46,17 @@ export const AdminDashboard = () => {
         <h3>{editingId ? 'Edit Recommended Book' : 'Add New Recommended Book'}</h3>
         <p className="text-muted mb-4">Focus on compelling review content and accurate Amazon tracking URLs.</p>
         
-        <label className="admin-label">Cover Text (Short Title for the Cover Art)</label>
-        <input className="admin-input" value={form.coverText} onChange={e => setForm({...form, coverText: e.target.value})} placeholder="e.g. Atomic Habits" />
+        <label className="admin-label" htmlFor="coverText">Cover Text (Short Title for the Cover Art)</label>
+        <input id="coverText" className="admin-input" value={form.coverText} onChange={e => setForm({...form, coverText: e.target.value})} placeholder="e.g. Atomic Habits" />
 
-        <label className="admin-label">Catchy Article Title</label>
-        <input className="admin-input" value={form.title} onChange={e => setForm({...form, title: e.target.value})} placeholder="e.g. 5 Habits That Will Transform Your Year" />
+        <label className="admin-label" htmlFor="title">Catchy Article Title</label>
+        <input id="title" className="admin-input" value={form.title} onChange={e => setForm({...form, title: e.target.value})} placeholder="e.g. 5 Habits That Will Transform Your Year" />
         
-        <label className="admin-label">Mini-Review (Endorsement)</label>
-        <textarea className="admin-textarea" value={form.miniReview} onChange={e => setForm({...form, miniReview: e.target.value})} placeholder="Provide an authentic, persuasive 2-3 sentence review that drives clicks..." />
+        <label className="admin-label" htmlFor="miniReview">Mini-Review (Endorsement)</label>
+        <textarea id="miniReview" className="admin-textarea" value={form.miniReview} onChange={e => setForm({...form, miniReview: e.target.value})} placeholder="Provide an authentic, persuasive 2-3 sentence review that drives clicks..." />
         
-        <label className="admin-label">Amazon SiteStripe URL (amzn.to)</label>
-        <input className="admin-input" value={form.amazonUrl} onChange={e => setForm({...form, amazonUrl: e.target.value})} placeholder="https://amzn.to/..." />
+        <label className="admin-label" htmlFor="amazonUrl">Amazon SiteStripe URL (amzn.to)</label>
+        <input id="amazonUrl" className="admin-input" value={form.amazonUrl} onChange={e => setForm({...form, amazonUrl: e.target.value})} placeholder="https://amzn.to/..." />
         
         <div style={{ display: 'flex', gap: '10px' }}>
           <button className="btn btn-amazon" onClick={handleSave}>

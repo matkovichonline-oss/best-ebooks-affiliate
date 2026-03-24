@@ -38,6 +38,7 @@ export const AffiliateProductCard = ({ product }: { product: AffiliateProduct })
             target="_blank" 
             rel="noopener noreferrer" 
             className="btn btn-amazon"
+            aria-label={`View ${product.title} on Amazon`}
           >
             <ShoppingBag size={22} /> View on Amazon
           </a>
