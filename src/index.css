@@ -40,15 +40,10 @@
 body {
   font-family: var(--font-sans); /* Body text in UI looks sans-serif */
   background-color: var(--bg-color);
-  background-image: linear-gradient(rgba(10, 15, 10, 0.5), rgba(5, 10, 5, 0.8)), url('./assets/monstera-bg.png');
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
-  animation: panBackground 150s ease-in-out infinite;
 }
 
 h1, h2, h3, h4 {

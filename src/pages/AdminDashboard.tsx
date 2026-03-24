@@ -8,7 +8,7 @@ export const AdminDashboard = () => {
   const { products, addProduct, updateProduct, deleteProduct } = useAffiliateProducts();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<Omit<AffiliateProduct, 'id'>>({
-    title: '', miniReview: '', amazonUrl: '', coverText: ''
+    title: '', author: '', miniReview: '', amazonUrl: '', coverText: '', category: 'Mystery & Thriller', coverUrl: ''
   });
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ export const AdminDashboard = () => {
       addProduct(form);
     }
     setEditingId(null);
-    setForm({ title: '', miniReview: '', amazonUrl: '', coverText: '' });
+    setForm({ title: '', author: '', miniReview: '', amazonUrl: '', coverText: '', category: 'Mystery & Thriller', coverUrl: '' });
   };
 
   return (
@@ -46,11 +46,23 @@ export const AdminDashboard = () => {
         <h3>{editingId ? 'Edit Recommended Book' : 'Add New Recommended Book'}</h3>
         <p className="text-muted mb-4">Focus on compelling review content and accurate Amazon tracking URLs.</p>
         
-        <label className="admin-label" htmlFor="coverText">Cover Text (Short Title for the Cover Art)</label>
+        <label className="admin-label" htmlFor="category">Book Category</label>
+        <select id="category" className="admin-input" value={form.category} onChange={e => setForm({...form, category: e.target.value as any})} style={{ background: 'rgba(0,0,0,0.8)' }}>
+          <option value="Mystery & Thriller">Mystery & Thriller</option>
+          <option value="Personal Development">Personal Development</option>
+          <option value="Science Fiction & Fantasy">Science Fiction & Fantasy</option>
+        </select>
+        <label className="admin-label" htmlFor="coverText">Cover Text (Fallback title for image)</label>
         <input id="coverText" className="admin-input" value={form.coverText} onChange={e => setForm({...form, coverText: e.target.value})} placeholder="e.g. Atomic Habits" />
+
+        <label className="admin-label" htmlFor="coverUrl">Real Cover Image URL (Optional)</label>
+        <input id="coverUrl" className="admin-input" value={form.coverUrl || ''} onChange={e => setForm({...form, coverUrl: e.target.value})} placeholder="https://covers.openlibrary.org/..." />
 
         <label className="admin-label" htmlFor="title">Catchy Article Title</label>
         <input id="title" className="admin-input" value={form.title} onChange={e => setForm({...form, title: e.target.value})} placeholder="e.g. 5 Habits That Will Transform Your Year" />
+        
+        <label className="admin-label" htmlFor="author">Author Name</label>
+        <input id="author" className="admin-input" value={form.author} onChange={e => setForm({...form, author: e.target.value})} placeholder="e.g. James Clear" />
         
         <label className="admin-label" htmlFor="miniReview">Mini-Review (Endorsement)</label>
         <textarea id="miniReview" className="admin-textarea" value={form.miniReview} onChange={e => setForm({...form, miniReview: e.target.value})} placeholder="Provide an authentic, persuasive 2-3 sentence review that drives clicks..." />
@@ -62,7 +74,7 @@ export const AdminDashboard = () => {
           <button className="btn btn-amazon" onClick={handleSave}>
             {editingId ? 'Save Changes' : <><Plus size={18} /> Add to Catalog</>}
           </button>
-          {editingId && <button className="btn btn-outline" onClick={() => { setEditingId(null); setForm({ title: '', miniReview: '', amazonUrl: '', coverText: '' }); }}>Cancel</button>}
+          {editingId && <button className="btn btn-outline" onClick={() => { setEditingId(null); setForm({ title: '', author: '', miniReview: '', amazonUrl: '', coverText: '', category: 'Mystery & Thriller', coverUrl: '' }); }}>Cancel</button>}
         </div>
       </div>
 

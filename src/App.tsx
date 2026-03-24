@@ -15,7 +15,7 @@ const LoginAndAdminRoute = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'admin123') {
+    if (password === '5050!!!') {
       localStorage.setItem('affiliate_auth', 'true');
       window.location.reload();
     } else {

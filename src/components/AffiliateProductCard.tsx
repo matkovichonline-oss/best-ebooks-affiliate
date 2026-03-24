@@ -18,15 +18,18 @@ export const AffiliateProductCard = ({ product }: { product: AffiliateProduct })
           alignItems: 'center',
           justifyContent: 'center',
           color: 'var(--accent)',
-          padding: '10px',
+          padding: '2px', // enough padding to let the border shine
           textAlign: 'center',
           fontWeight: '400',
           fontFamily: 'var(--font-serif)',
           border: '1px solid var(--border)',
-          fontSize: '0.8rem',
-          lineHeight: 1.2
+          overflow: 'hidden'
         }}>
-          {product.coverText}
+          {product.coverUrl ? (
+            <img src={product.coverUrl} alt={product.title} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }} />
+          ) : (
+            <div style={{ padding: '10px', fontSize: '0.8rem', lineHeight: 1.2 }}>{product.coverText}</div>
+          )}
         </div>
 
         {/* Info next to cover */}
