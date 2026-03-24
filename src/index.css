@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --bg-color: #faf9f6; /* Off-white paper look */
-  --text-primary: #1a1a1a;
-  --text-secondary: #4b5563;
-  --accent: #d97706; /* Amazon-ish orange but muted */
-  --accent-hover: #b45309;
-  --card-bg: #ffffff;
-  --border: #e5e7eb;
+  --bg-color: #020617; /* Very dark blue/slate */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --accent: #10b981; /* Emerald green */
+  --accent-hover: #059669;
+  --card-bg: rgba(15, 23, 42, 0.7); /* Translucent dark slate */
+  --border: rgba(255, 255, 255, 0.1);
+  --glass-blur: blur(12px);
   
   --font-serif: 'Merriweather', serif;
   --font-sans: 'Inter', sans-serif;
@@ -22,9 +23,14 @@
 body {
   font-family: var(--font-serif);
   background-color: var(--bg-color);
+  background-image: linear-gradient(rgba(2, 6, 23, 0.6), rgba(2, 6, 23, 0.8)), url('./assets/rainforest-bg.png');
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
   color: var(--text-primary);
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
 }
 
 h1, h2, h3, h4 {
@@ -36,15 +42,15 @@ h1, h2, h3, h4 {
 a {
   color: var(--accent);
   text-decoration: none;
-  transition: color 0.2s;
+  transition: all 0.2s;
 }
 a:hover {
-  text-decoration: underline;
+  filter: brightness(1.2);
 }
 
 /* Utilities */
 .container {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -53,6 +59,16 @@ a:hover {
 .mt-4 { margin-top: 1rem; }
 .mb-4 { margin-bottom: 1rem; }
 .mb-8 { margin-bottom: 2rem; }
+
+/* Glassmorphism Card */
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
 
 /* Buttons */
 .btn {
@@ -63,104 +79,104 @@ a:hover {
   font-family: var(--font-sans);
   font-weight: 600;
   padding: 12px 24px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 1rem;
 }
 
 .btn-amazon {
-  background-color: #f59e0b;
-  color: #111;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 .btn-amazon:hover {
-  background-color: #d97706;
   transform: translateY(-2px);
-  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
 .btn-outline {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
   color: var(--text-secondary);
 }
 .btn-outline:hover {
-  background: var(--border);
+  background: rgba(255, 255, 255, 0.1);
   color: var(--text-primary);
 }
 
 /* Editorial Cards */
 .editorial-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 30px;
+  padding: 40px;
   margin-bottom: 40px;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
 }
 
 .editorial-card h2 {
-  font-size: 1.75rem;
-  margin-bottom: 15px;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #fff;
+  letter-spacing: -0.5px;
 }
 
 .editorial-card p.review-text {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   color: var(--text-secondary);
-  margin-bottom: 25px;
+  margin-bottom: 30px;
+  font-weight: 300;
 }
 
 /* Header */
 .site-header {
-  padding: 40px 0;
+  padding: 80px 0 60px;
   text-align: center;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 40px;
-  background: var(--card-bg);
+  margin-bottom: 60px;
 }
 
 .site-title {
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   font-family: var(--font-sans);
   font-weight: 800;
-  letter-spacing: -1px;
+  letter-spacing: -2px;
+  background: linear-gradient(to right, #fff, #10b981);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-top: 20px;
 }
 
 /* Admin Specific */
 .admin-container {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 60px 20px;
   font-family: var(--font-sans);
 }
 
-.admin-input {
+.admin-input, .admin-textarea {
   width: 100%;
-  padding: 10px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  font-family: var(--font-sans);
-  margin-bottom: 15px;
+  border-radius: 8px;
+  color: white;
+  font-family: inherit;
+  margin-bottom: 20px;
+  transition: all 0.2s;
 }
 
-.admin-textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  font-family: var(--font-serif);
-  min-height: 100px;
-  margin-bottom: 15px;
-  resize: vertical;
+.admin-input:focus, .admin-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .admin-label {
   display: block;
   font-weight: 600;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   font-size: 0.9rem;
+  color: var(--accent);
 }

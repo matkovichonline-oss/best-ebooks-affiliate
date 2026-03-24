@@ -3,31 +3,33 @@ import { ShoppingBag } from 'lucide-react';
 
 export const AffiliateProductCard = ({ product }: { product: AffiliateProduct }) => {
   return (
-    <article className="editorial-card">
-      <div style={{ display: 'flex', gap: '30px', alignItems: 'flex-start' }}>
+    <article className="editorial-card glass-card">
+      <div style={{ display: 'flex', gap: '40px', alignItems: 'center', flexWrap: 'wrap' }}>
         
         {/* Mock Book Cover */}
         <div style={{
           flexShrink: 0,
-          width: '180px',
-          height: '260px',
-          background: 'linear-gradient(to bottom right, #f87171, #ef4444)',
-          borderRadius: '4px',
-          boxShadow: '4px 4px 15px rgba(0,0,0,0.1)',
+          width: '200px',
+          height: '280px',
+          background: 'linear-gradient(135deg, #065f46 0%, #064e3b 100%)',
+          borderRadius: '8px',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: 'white',
-          padding: '20px',
+          color: 'rgba(255, 255, 255, 0.9)',
+          padding: '24px',
           textAlign: 'center',
-          fontWeight: 'bold',
-          lineHeight: 1.3
+          fontWeight: '700',
+          lineHeight: 1.2,
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          fontSize: '1.1rem'
         }}>
           {product.coverText}
         </div>
 
         {/* Content Section */}
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: '1', minWidth: '300px' }}>
           <h2>{product.title}</h2>
           <p className="review-text">{product.miniReview}</p>
           
@@ -37,7 +39,7 @@ export const AffiliateProductCard = ({ product }: { product: AffiliateProduct })
             rel="noopener noreferrer" 
             className="btn btn-amazon"
           >
-            <ShoppingBag size={20} /> View on Amazon
+            <ShoppingBag size={22} /> View on Amazon
           </a>
         </div>
       </div>
