@@ -57,8 +57,8 @@ export const VlogList = () => {
             </div>
           ) : posts.length === 0 ? (
             <div className="glass-card text-center" style={{ padding: '60px' }}>
-              <h2 style={{ color: '#fff' }}>No vlogs found yet.</h2>
-              <p className="text-muted">The AI is currently drafting its first masterpiece. Check back tomorrow!</p>
+              <h2 style={{ color: '#fff' }}>No reviews found... yet.</h2>
+              <p className="text-muted">We are currently drafting our first masterpiece. Check back tomorrow!</p>
             </div>
           ) : (
             posts.map(post => (
@@ -100,7 +100,7 @@ export const VlogList = () => {
 
         <footer className="glass-card text-center" style={{ padding: '30px', marginBottom: '20px' }}>
            <p className="text-muted" style={{ fontSize: '0.9rem' }}>
-            © {new Date().getFullYear()} The Best Books — Daily AI Insights.
+            © {new Date().getFullYear()} The Best Books — Daily Insights.
           </p>
         </footer>
       </div>

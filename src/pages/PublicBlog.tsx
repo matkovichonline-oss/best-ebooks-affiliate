@@ -172,11 +172,11 @@ export const PublicBlog = () => {
         {/* DAILY VLOG TEASER */}
         <section className="vlog-teaser glass-card" style={{ margin: '40px auto 20px', maxWidth: '800px', padding: '30px', textAlign: 'center', border: '1px solid var(--accent)' }}>
            <div style={{ fontSize: '0.8rem', color: 'var(--accent)', fontWeight: 'bold', letterSpacing: '3px', marginBottom: '10px', textTransform: 'uppercase' }}>
-              Fresh from the AI
+              Fresh Daily Pick
            </div>
-           <h2 style={{ color: '#fff', fontSize: '1.8rem', marginBottom: '15px' }}>Daily AI Book Insights</h2>
+           <h2 style={{ color: '#fff', fontSize: '1.8rem', marginBottom: '15px' }}>Curated Book Insights</h2>
            <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '25px', fontSize: '1rem', fontStyle: 'italic' }}>
-              "Our AI just finished analyzing today's top pick. Dive into the deep review and find out why this book is trending."
+              "We just finished analyzing today's top pick. Dive into the deep review and find out why this book is trending."
            </p>
            <a href="/vlogs" className="btn btn-outline" style={{ display: 'inline-block' }}>
               Read Today's Review →
