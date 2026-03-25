@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { PublicBlog } from './pages/PublicBlog';
 import { AdminDashboard } from './pages/AdminDashboard';
+import { VlogList } from './pages/VlogList';
 import { useState } from 'react';
 
 const LoginAndAdminRoute = () => {
@@ -55,6 +56,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<PublicBlog />} />
+        <Route path="/vlogs" element={<VlogList />} />
         <Route path="/admin" element={<LoginAndAdminRoute />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

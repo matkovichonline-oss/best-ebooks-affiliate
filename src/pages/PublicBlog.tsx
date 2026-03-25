@@ -91,6 +91,7 @@ export const PublicBlog = () => {
           <h1 className="site-title" style={{ fontSize: '1.8rem', letterSpacing: '2px' }}>The Best Books</h1>
           
           <nav className="nav-links" style={{ paddingTop: '15px' }}>
+            <a href="/vlogs" style={{ color: 'var(--accent)', fontWeight: 'bold', marginRight: '20px' }}>Daily Vlog ✨</a>
             {categories.map(cat => (
               <a 
                 key={cat.id} 
