@@ -12,6 +12,9 @@ export const PublicBlog = () => {
   const [activeCategory, setActiveCategory] = useState<BookCategory>('Mystery & Thriller');
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [showNav, setShowNav] = useState(true);
+  const [showTopBtn, setShowTopBtn] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const categories = [
     { name: 'Mystery & Thriller' as BookCategory, id: 'mystery', bg: `url("${bgMystery}")` },
@@ -24,8 +27,10 @@ export const PublicBlog = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight / 2.5;
-      
+      const currentY = window.scrollY;
+      const scrollPosition = currentY + window.innerHeight / 2.5;
+
+      // Category detection
       for (let i = categories.length - 1; i >= 0; i--) {
         const section = document.getElementById(categories[i].id);
         if (section && section.offsetTop <= scrollPosition) {
@@ -33,12 +38,22 @@ export const PublicBlog = () => {
           break;
         }
       }
+
+      // Nav hide on scroll down, show on scroll up
+      if (currentY > 120) {
+        setShowNav(currentY < lastScrollY);
+        setShowTopBtn(true);
+      } else {
+        setShowNav(true);
+        setShowTopBtn(false);
+      }
+      setLastScrollY(currentY);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   return (
     <>
@@ -72,7 +87,7 @@ export const PublicBlog = () => {
 
 
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <header className="site-header glass-card" style={{ position: 'sticky', top: '20px', zIndex: 10, padding: '20px 40px', margin: '20px auto 40px' }}>
+        <header className="site-header glass-card" style={{ position: 'sticky', top: '20px', zIndex: 10, padding: '20px 40px', margin: '20px auto 40px', transform: showNav ? 'translateY(0)' : 'translateY(-140%)', transition: 'transform 0.4s cubic-bezier(0.4,0,0.2,1)', opacity: showNav ? 1 : 0 }}>
           <h1 className="site-title" style={{ fontSize: '1.8rem', letterSpacing: '2px' }}>The Best Books</h1>
           
           <nav className="nav-links" style={{ paddingTop: '15px' }}>
@@ -215,12 +230,45 @@ export const PublicBlog = () => {
 
         <footer className="glass-card text-center" style={{ padding: '30px', marginTop: '40px', marginBottom: '20px' }}>
           <p className="text-muted" style={{ fontSize: '0.9rem' }}>
-            © {new Date().getFullYear()} The Literary Leaf.
+            © {new Date().getFullYear()} The Best Books.
             <br />
             <em style={{ opacity: 0.7 }}>Amazon Associates Disclaimer: As an Amazon Associate, I earn from qualifying purchases.</em>
           </p>
         </footer>
       </div>
+
+      {/* Floating Back to Top Button */}
+      <button
+        id="back-to-top"
+        onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+        aria-label="Back to top"
+        style={{
+          position: 'fixed',
+          bottom: '30px',
+          right: '30px',
+          zIndex: 100,
+          width: '52px',
+          height: '52px',
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, var(--accent), #b8882a)',
+          border: 'none',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 4px 20px rgba(212,165,55,0.4)',
+          opacity: showTopBtn ? 1 : 0,
+          transform: showTopBtn ? 'scale(1) translateY(0)' : 'scale(0.8) translateY(20px)',
+          transition: 'opacity 0.3s ease, transform 0.3s ease',
+          pointerEvents: showTopBtn ? 'auto' : 'none',
+          fontSize: '1.4rem',
+          color: '#0a0d11',
+          fontWeight: 'bold',
+          lineHeight: 1,
+        }}
+      >
+        ↑
+      </button>
     </>
   );
 };
