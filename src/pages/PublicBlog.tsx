@@ -177,14 +177,29 @@ export const PublicBlog = () => {
           
           {!subscribed ? (
             <form 
-              onSubmit={(e) => {
+            onSubmit={async (e) => {
                 e.preventDefault();
-                if (email) {
-                  const existing = JSON.parse(localStorage.getItem('newsletter_subscribers') || '[]');
-                  localStorage.setItem('newsletter_subscribers', JSON.stringify([...existing, { email, date: new Date().toISOString() }]));
-                  setSubscribed(true);
-                  setEmail('');
-                }
+                if (!email) return;
+                try {
+                  // Add to Brevo list
+                  await fetch('https://api.brevo.com/v3/contacts', {
+                    method: 'POST',
+                    headers: {
+                      'api-key': import.meta.env.VITE_BREVO_API_KEY,
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      email,
+                      listIds: [3],
+                      updateEnabled: true,
+                    }),
+                  });
+                } catch (_) { /* silent fail - still save locally */ }
+                // Also save locally for Admin dashboard
+                const existing = JSON.parse(localStorage.getItem('newsletter_subscribers') || '[]');
+                localStorage.setItem('newsletter_subscribers', JSON.stringify([...existing, { email, date: new Date().toISOString() }]));
+                setSubscribed(true);
+                setEmail('');
               }}
               style={{ display: 'flex', gap: '10px', maxWidth: '500px', margin: '0 auto' }}
             >
