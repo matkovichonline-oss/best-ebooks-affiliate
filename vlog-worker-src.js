@@ -73,7 +73,7 @@ export default {
     if (env.BREVO_API_KEY) {
       try {
         const emailData = {
-          sender: { name: "Best Ebooks Daily", email: "managementbestebooks@gmail.com" },
+          sender: { name: "Best Ebooks Daily", email: "daily@best-ebooks.net" },
           to: [{ email: "managementbestebooks@gmail.com" }],
           subject: `📖 Today's Book Insight: ${book.title}`,
           htmlContent: `
@@ -149,6 +149,34 @@ export default {
           </body>
         </html>
       `, { headers: { 'Content-Type': 'text/html' }});
+    }
+
+    if (url.pathname === '/test-email') {
+      try {
+        const testData = {
+          sender: { name: "Best Ebooks Daily", email: "daily@best-ebooks.net" },
+          to: [{ email: "managementbestebooks@gmail.com" }],
+          subject: "Test Email - Brevo Key Verification",
+          htmlContent: "<h1>If you see this, the new Brevo API key is working!</h1>"
+        };
+        const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'api-key': env.BREVO_API_KEY,
+            'Content-Type': 'application/json',
+            'User-Agent': 'Cloudflare-Worker-BestBooks'
+          },
+          body: JSON.stringify(testData)
+        });
+        const body = await res.text();
+        return new Response(JSON.stringify({ status: res.status, body }), {
+          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), {
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
     }
 
     if (url.pathname === '/force-generate') {
