@@ -78,6 +78,9 @@ export const AdminDashboard = () => {
             borderBottom: activeTab === 'subscribers' ? '2px solid var(--accent)' : 'none',
             cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px'
           }}
+        >
+          SUBSCRIBERS ({subscribers.length})
+        </button>
         <button 
           onClick={() => {
             setActiveTab('social');
