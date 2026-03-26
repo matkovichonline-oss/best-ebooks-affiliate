@@ -7,7 +7,8 @@ import { useNavigate } from 'react-router-dom';
 export const AdminDashboard = () => {
   const { products, addProduct, updateProduct, deleteProduct } = useAffiliateProducts();
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'books' | 'subscribers'>('books');
+  const [activeTab, setActiveTab] = useState<'books' | 'subscribers' | 'social'>('books');
+  const [kits, setKits] = useState<any[]>([]);
   const [subscribers, setSubscribers] = useState<{email: string, date: string}[]>(() => 
     JSON.parse(localStorage.getItem('newsletter_subscribers') || '[]')
   );
@@ -77,8 +78,21 @@ export const AdminDashboard = () => {
             borderBottom: activeTab === 'subscribers' ? '2px solid var(--accent)' : 'none',
             cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px'
           }}
+        <button 
+          onClick={() => {
+            setActiveTab('social');
+            fetch('https://best-books-content-engine.matkovichonline.workers.dev/kits')
+              .then(res => res.json())
+              .then(data => setKits(data));
+          }}
+          style={{ 
+            padding: '10px 20px', background: 'none', border: 'none', 
+            color: activeTab === 'social' ? 'var(--accent)' : '#64748b',
+            borderBottom: activeTab === 'social' ? '2px solid var(--accent)' : 'none',
+            cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9rem', letterSpacing: '1px'
+          }}
         >
-          SUBSCRIBERS ({subscribers.length})
+          SOCIAL KIT 📌
         </button>
       </div>
 
@@ -136,7 +150,7 @@ export const AdminDashboard = () => {
             ))}
           </div>
         </>
-      ) : (
+      ) : activeTab === 'subscribers' ? (
         <div style={{ display: 'grid', gap: '15px' }}>
           {subscribers.length > 0 ? subscribers.map((sub, idx) => (
             <div key={idx} className="glass-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', background: 'rgba(255,255,255,0.02)' }}>
@@ -155,6 +169,40 @@ export const AdminDashboard = () => {
           )) : (
             <div className="glass-card" style={{ padding: '40px', textAlign: 'center', background: 'rgba(255,255,255,0.02)' }}>
               <p style={{ color: '#64748b' }}>No subscribers yet. Promote your newsletter on the main page!</p>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div style={{ display: 'grid', gap: '20px' }}>
+          {kits.length > 0 ? kits.map((kit, idx) => (
+            <div key={idx} className="glass-card" style={{ padding: '30px', background: 'linear-gradient(135deg, rgba(230, 0, 35, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)', border: '1px solid rgba(230, 0, 35, 0.2)' }}>
+              <div style={{ display: 'flex', gap: '25px' }}>
+                <img src={kit.imageUrl} alt="Book Cover" style={{ width: '120px', borderRadius: '8px', boxShadow: '0 5px 15px rgba(0,0,0,0.3)' }} />
+                <div style={{ flex: 1 }}>
+                  <h3 style={{ color: '#fff', marginBottom: '15px' }}>{kit.title}</h3>
+                  <div style={{ marginBottom: '15px' }}>
+                    <label style={{ color: '#64748b', fontSize: '0.75rem', display: 'block', marginBottom: '5px' }}>PINTEREST DESCRIPTION</label>
+                    <div style={{ background: '#000', padding: '10px', borderRadius: '5px', fontSize: '0.9rem', color: '#cbd5e1', border: '1px solid #1e293b' }}>
+                      {kit.description}
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <button className="btn btn-amazon" onClick={() => {
+                        navigator.clipboard.writeText(kit.description);
+                        alert('Pinned description copied!');
+                      }} style={{ background: '#E60023', fontSize: '0.85rem' }}>
+                      COPY DESCRIPTION
+                    </button>
+                    <a href={kit.link} target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ fontSize: '0.85rem' }}>
+                      SOURCE LINK
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )) : (
+            <div className="glass-card" style={{ padding: '40px', textAlign: 'center' }}>
+              <p>No social kits generated yet. Trigger a generation or wait for tomorrow!</p>
             </div>
           )}
         </div>

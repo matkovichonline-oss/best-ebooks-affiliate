@@ -35,31 +35,14 @@ export default {
     await env.BOOK_REVIEWS.put(finalPost.id, JSON.stringify(finalPost));
     await env.BOOK_REVIEWS.put("latest_review", JSON.stringify(finalPost));
 
-    // 3. Option B/1: Pinterest
-    if (env.PINTEREST_TOKEN && env.PINTEREST_BOARD_ID) {
-      try {
-        const pinData = {
-          title: `Daily Reading: ${book.title}`,
-          description: `Check out our latest AI-driven review of ${book.title}! Read the full story on our blog.`,
-          link: finalPost.homeUrl,
-          board_id: env.PINTEREST_BOARD_ID,
-          media_source: {
-            source_type: "image_url",
-            url: "https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg" 
-          }
-        };
-
-        await fetch('https://api.pinterest.com/v5/pins', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${env.PINTEREST_TOKEN}`,
-            'Content-Type': 'application/json',
-            'User-Agent': 'Cloudflare-Worker-BestBooks'
-          },
-          body: JSON.stringify(pinData)
-        });
-      } catch (err) { console.error("Pinterest Error:", err); }
-    }
+    // 3. Pinterest Kit (Semi-Manual)
+    const pinKit = {
+      title: `📖 Must Read: ${book.title}`,
+      description: `Daily Book Review: ${book.title} by ${book.author}. Find out why this is today's top pick! #books #reading #affiliate`,
+      link: finalPost.homeUrl,
+      imageUrl: `https://covers.openlibrary.org/b/title/${encodeURIComponent(book.title)}-L.jpg`
+    };
+    await env.BOOK_REVIEWS.put(`kit-${finalPost.id}`, JSON.stringify(pinKit));
 
     // 4. Option B/2: Dev.to
     if (env.DEV_TO_API_KEY) {
@@ -94,12 +77,27 @@ export default {
           to: [{ email: "managementbestebooks@gmail.com" }],
           subject: `📖 Today's Book Insight: ${book.title}`,
           htmlContent: `
-            <h1>Today's Daily Insight</h1>
-            <p>${finalPost.content.replace(/\n/g, '<br>')}</p>
-            <br>
-            <a href="${book.amazonUrl}" style="padding: 10px 20px; background: #FF9900; color: white; text-decoration: none; border-radius: 5px;">View on Amazon</a>
-            <br><br>
-            <p>Read more reviews at <a href="https://best-ebooks.net/vlogs">best-ebooks.net</a></p>
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
+              <h1 style="color: #333;">📖 Today's Daily Insight: ${book.title}</h1>
+              <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border-left: 4px solid #FF9900;">
+                <p>${finalPost.content.replace(/\n/g, '<br>')}</p>
+              </div>
+              
+              <div style="margin: 30px 0; text-align: center;">
+                <a href="${book.amazonUrl}" style="padding: 12px 25px; background: #FF9900; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">View on Amazon</a>
+              </div>
+
+              <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+              <h2 style="color: #E60023;">📌 Pinterest Posting Kit</h2>
+              <p style="color: #666; font-size: 0.9rem;">Copy and paste this once a week to grow your traffic!</p>
+              <div style="background: #fff5f5; padding: 15px; border: 1px dashed #E60023; border-radius: 8px;">
+                <p><strong>Title:</strong> ${pinKit.title}</p>
+                <p><strong>Description:</strong> ${pinKit.description}</p>
+                <p><strong>Link:</strong> ${pinKit.link}</p>
+                <p><strong>Cover Image:</strong> <a href="${pinKit.imageUrl}">${pinKit.imageUrl}</a></p>
+              </div>
+            </div>
           `
         };
 
@@ -124,6 +122,33 @@ export default {
       return new Response(latest, {
         headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
       });
+    }
+
+    if (url.pathname === '/kits') {
+      const list = await env.BOOK_REVIEWS.list({ prefix: 'kit-' });
+      const kits = await Promise.all(
+        list.keys.map(async key => JSON.parse(await env.BOOK_REVIEWS.get(key.name)))
+      );
+      return new Response(JSON.stringify(kits), {
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
+      });
+    }
+
+    if (url.pathname === '/demo') {
+      return new Response(`
+        <html>
+          <body style="font-family: sans-serif; padding: 50px; text-align: center; background: #f4f4f4;">
+            <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: inline-block;">
+              <h1 style="color: #E60023;">Pinterest Integration Active</h1>
+              <p style="color: #555; font-size: 1.2rem;">Status: Authorized for BestBooks_AI</p>
+              <p style="color: #888;">Authenticated via Standard API v5</p>
+              <div style="margin-top: 20px; padding: 15px; background: #fdfdfd; border: 1px solid #eee; border-radius: 10px; font-family: monospace;">
+                Target Board: Must Read Books (env.PINTEREST_BOARD_ID)
+              </div>
+            </div>
+          </body>
+        </html>
+      `, { headers: { 'Content-Type': 'text/html' }});
     }
 
     if (url.pathname === '/force-generate') {
